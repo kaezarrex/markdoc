@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://rawgithub.com/iurevych/Flat-UI/master/css/flat-ui.css">
+        <style>
+            body { margin: 50px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            {{ markup|safe }}
+        </div>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>
+        $(function() {
+            var lastAge = 0,
+                frequency = 1000,
+                url = '/age' + window.location.pathname,
+                loop = function() {
+                    $.ajax(url, {
+                        success: function(data) {
+                            if (lastAge == 0) lastAge = data.age;
+
+                            if (data.age > lastAge) window.location = window.location;
+
+                            setTimeout(loop, frequency);
+                        },
+                        error: function() {
+                            console.log('error');
+                            console.log(arguments);
+                        }
+                    });
+                };
+
+            loop(frequency);
+        });
+        </script>
+    </body>
+</html>

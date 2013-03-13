@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, render_template
 import markdown
 
@@ -25,6 +27,11 @@ def index():
 def document(file_path):
     markup = render_markdown_file(file_path)
     return render_template('document.html', markup=markup)
+
+
+@app.route('/age/<path:file_path>')
+def api_age(file_path):
+    return jsonify(age=os.stat(file_path).st_mtime)
 
 
 if __name__ == '__main__':
